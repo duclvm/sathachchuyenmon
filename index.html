@@ -2,8 +2,8 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sát Hạch Chuyên Môn QLTK & ĐTXD 2026 - 114 Câu Hỏi Đối Chiếu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sát Hạch Chuyên Môn QLTK & ĐTXD 2026 - 114 Câu Hỏi Chuẩn</title>
   <style>
     :root {
       --primary: #d97706;
@@ -27,16 +27,28 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Khối Top-Wrapper gom Header + Toolbar để trượt ẩn mượt mà khi vuốt xuống */
+    .top-bar-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+      will-change: transform;
+    }
+
+    .top-bar-wrapper.nav-hidden {
+      transform: translateY(-105%);
+      pointer-events: none;
     }
 
     header {
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: #fff;
-      padding: 18px 24px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      padding: 14px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
 
     .header-inner {
@@ -46,44 +58,46 @@
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
     }
 
     .brand h1 {
-      font-size: 1.3rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: #fbbf24;
       letter-spacing: -0.02em;
+      line-height: 1.3;
     }
 
     .brand p {
-      font-size: 0.84rem;
+      font-size: 0.78rem;
       color: #cbd5e1;
+      margin-top: 2px;
     }
 
     .stats-bar {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     .stat-pill {
-      background: rgba(255,255,255,0.1);
-      padding: 6px 14px;
+      background: rgba(255,255,255,0.12);
+      padding: 4px 11px;
       border-radius: 999px;
-      font-size: 0.84rem;
+      font-size: 0.78rem;
       font-weight: 600;
     }
     .stat-pill.correct { color: #4ade80; }
     .stat-pill.wrong { color: #f87171; }
 
     .toolbar {
-      background: #fff;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 24px;
-      position: sticky;
-      top: 72px;
-      z-index: 90;
+      padding: 10px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .toolbar-inner {
@@ -91,7 +105,7 @@
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
       justify-content: space-between;
     }
@@ -104,10 +118,10 @@
     }
 
     select, input[type="text"], .btn {
-      padding: 8px 12px;
+      padding: 7px 11px;
       border-radius: 8px;
       border: 1px solid var(--border);
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       font-weight: 500;
       background: #fff;
       color: var(--text);
@@ -116,7 +130,7 @@
     }
 
     input[type="text"] {
-      min-width: 210px;
+      min-width: 190px;
       cursor: text;
     }
 
@@ -142,37 +156,104 @@
       font-weight: 600;
     }
 
+    /* Nút thu gọn/mở rộng thanh công cụ trên Mobile */
+    .mobile-toggle-bar {
+      display: none;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Nút nổi góc dưới bên phải giúp mở nhanh bộ lọc hoặc lên đầu trang */
+    .floating-controls {
+      position: fixed;
+      bottom: 18px;
+      right: 16px;
+      z-index: 120;
+      display: flex;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+
+    .floating-controls.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .fab-btn {
+      background: #0f172a;
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.28);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .layout {
       max-width: 1440px;
-      margin: 22px auto;
-      padding: 0 24px;
+      margin: 18px auto;
+      padding: 0 20px 60px;
       display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 24px;
+      grid-template-columns: 1fr 330px;
+      gap: 22px;
       align-items: start;
     }
 
     @media (max-width: 1024px) {
-      .layout { grid-template-columns: 1fr; }
-      .toolbar { top: 108px; }
+      .layout { grid-template-columns: 1fr; padding: 0 14px 70px; margin: 12px auto; }
+      header { padding: 10px 14px; }
+      .brand p { display: none; }
+      .brand h1 { font-size: 1rem; }
+      .toolbar { padding: 8px 14px; }
+      .mobile-toggle-bar { display: flex; }
+      .toolbar-collapsible {
+        display: none;
+        width: 100%;
+        padding-top: 8px;
+        border-top: 1px dashed var(--border);
+        margin-top: 6px;
+      }
+      .toolbar-collapsible.open {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .filter-group { width: 100%; }
+      .filter-group select, .filter-group input[type="text"] {
+        width: 100%;
+        font-size: 0.85rem;
+      }
+      .sidebar { position: static !important; max-height: none !important; }
     }
 
     .section-banner {
       background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
       color: #fff;
-      padding: 13px 18px;
+      padding: 12px 16px;
       border-radius: 12px;
-      margin: 22px 0 14px;
+      margin: 18px 0 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-left: 6px solid #fbbf24;
+      gap: 10px;
+      border-left: 5px solid #fbbf24;
     }
 
     .section-banner:first-child { margin-top: 0; }
-    .section-banner h2 { font-size: 1rem; font-weight: 700; }
+    .section-banner h2 { font-size: 0.95rem; font-weight: 700; line-height: 1.35; }
     .section-banner span {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       background: rgba(255,255,255,0.16);
       padding: 4px 10px;
       border-radius: 99px;
@@ -183,8 +264,8 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 18px 20px;
-      margin-bottom: 15px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
       transition: border-color 0.2s;
     }
@@ -196,15 +277,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
     .badge {
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      padding: 3px 9px;
+      padding: 3px 8px;
       border-radius: 6px;
     }
 
@@ -214,9 +295,9 @@
     .badge-pos { background: #f1f5f9; color: #475569; }
 
     .q-text {
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 600;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       color: #1e293b;
     }
 
@@ -230,17 +311,17 @@
 
     .options-list {
       display: grid;
-      gap: 9px;
+      gap: 8px;
     }
 
     .opt-btn {
       width: 100%;
       text-align: left;
-      padding: 11px 14px;
+      padding: 11px 13px;
       border: 1.5px solid var(--border);
       border-radius: 10px;
       background: #fff;
-      font-size: 0.93rem;
+      font-size: 0.92rem;
       color: var(--text);
       cursor: pointer;
       display: flex;
@@ -256,14 +337,14 @@
 
     .opt-letter {
       font-weight: 800;
-      min-width: 26px;
-      height: 26px;
+      min-width: 25px;
+      height: 25px;
       border-radius: 6px;
       background: #f1f5f9;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       flex-shrink: 0;
     }
 
@@ -289,12 +370,12 @@
     }
 
     .explain-box {
-      margin-top: 13px;
-      padding: 12px 15px;
+      margin-top: 12px;
+      padding: 11px 14px;
       border-radius: 9px;
       background: #f8fafc;
       border-left: 4px solid var(--kw-blue);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       display: none;
     }
 
@@ -312,8 +393,8 @@
       border-radius: 12px;
       padding: 15px;
       position: sticky;
-      top: 140px;
-      max-height: calc(100vh - 160px);
+      top: 135px;
+      max-height: calc(100vh - 155px);
       overflow-y: auto;
     }
 
@@ -348,66 +429,99 @@
     .map-item.done-err { background: var(--danger); color: #fff; border-color: var(--danger); }
     .map-item.is-word { border-bottom: 3px solid #2563eb; }
     .map-item.is-pdf-extra { border-bottom: 3px solid #f59e0b; }
+
+    @media (min-width: 1025px) {
+      .toolbar-collapsible {
+        display: flex !important;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+    }
   </style>
 </head>
 <body class="kw-active">
 
-<header>
-  <div class="header-inner">
-    <div class="brand">
-      <h1>SÁT HẠCH CHUYÊN MÔN QLTK & ĐTXD — 114 CÂU HỎI CHUẨN</h1>
-      <p>Đối chiếu 67 câu File Word + 47 câu Sổ tay PDF (Bản đối chiếu 24.10.2026 - Lưu hành nội bộ)</p>
+<!-- Khối Header + Options Bar tự động trượt ẩn khi vuốt xuống -->
+<div class="top-bar-wrapper" id="top-bar">
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <h1>SÁT HẠCH CHUYÊN MÔN QLTK & ĐTXD — 114 CÂU CHUẨN</h1>
+        <p>Đối chiếu 67 câu File Word + 48 câu Sổ tay PDF (Bản đối chiếu 24.10.2026 - Lưu hành nội bộ)</p>
+      </div>
+      <div class="stats-bar">
+        <div class="stat-pill" id="stat-total">115 câu</div>
+        <div class="stat-pill" id="stat-done">Đã làm: 0/115</div>
+        <div class="stat-pill correct" id="stat-ok">Đúng: 0</div>
+        <div class="stat-pill wrong" id="stat-err">Sai: 0</div>
+      </div>
     </div>
-    <div class="stats-bar">
-      <div class="stat-pill" id="stat-total">Hiển thị: 114 câu</div>
-      <div class="stat-pill" id="stat-done">Đã làm: 0/114</div>
-      <div class="stat-pill correct" id="stat-ok">Đúng: 0</div>
-      <div class="stat-pill wrong" id="stat-err">Sai: 0</div>
+  </header>
+
+  <div class="toolbar">
+    <div class="toolbar-inner">
+      <!-- Thanh điều khiển rút gọn trên điện thoại -->
+      <div class="mobile-toggle-bar">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-amber" style="padding:6px 10px;font-size:0.78rem;" onclick="shuffleQuestions('ALL')">🔀 Random tất cả</button>
+          <button class="btn btn-amber" style="padding:6px 10px;font-size:0.78rem;" onclick="shuffleQuestions('CAT')">🔀 Random mục</button>
+          <button class="btn btn-primary" id="btn-reveal-mob" style="padding:6px 10px;font-size:0.78rem;" onclick="toggleRevealAll()">👁️ Đáp án</button>
+        </div>
+        <button class="btn btn-outline-blue" id="btn-mob-expand" style="padding:6px 10px;font-size:0.78rem;" onclick="toggleMobileDrawer()">⚙️ Bộ lọc ▾</button>
+      </div>
+
+      <!-- Khối bộ lọc chi tiết -->
+      <div class="toolbar-collapsible" id="toolbar-drawer">
+        <div class="filter-group">
+          <select id="filter-source" onchange="renderAll()">
+            <option value="ALL">Bộ đề: Toàn bộ 115 câu (Word + Sổ tay PDF)</option>
+            <option value="WORD">Chỉ 67 câu trong File Word (Đề thi trắc nghiệm)</option>
+            <option value="PDF_EXTRA">Chỉ 48 câu bổ sung từ Sổ tay PDF</option>
+          </select>
+
+          <select id="filter-cat" onchange="renderAll()">
+            <option value="ALL">Tất cả 9 Chuyên đề (01 → 09)</option>
+            <option value="C1">01 | Nhà chung cư & Văn phòng kết hợp lưu trú</option>
+            <option value="C2">02 | Nhà thương mại liên kế & Biệt thự nghỉ dưỡng</option>
+            <option value="C3">03 | Quy hoạch, diện tích và số tầng</option>
+            <option value="C4">04 | An toàn cháy và thoát nạn (QCVN 06)</option>
+            <option value="C5">05 | An toàn sử dụng, lan can, kính & chống ồn</option>
+            <option value="C6">06 | Tiếp cận sử dụng cho người khuyết tật</option>
+            <option value="C7">07 | Gara, thang máy và năng lượng</option>
+            <option value="C8">08 | Thiết kế, khảo sát & Quản lý xây dựng</option>
+            <option value="C9">09 | Quy trình & Phân quyền nội bộ Sun Group</option>
+          </select>
+
+          <select id="filter-status" onchange="renderAll()">
+            <option value="ALL">Trạng thái: Tất cả</option>
+            <option value="UNANSWERED">Chưa trả lời</option>
+            <option value="WRONG">Các câu làm sai</option>
+            <option value="CORRECT">Các câu làm đúng</option>
+          </select>
+
+          <input type="text" id="search-input" placeholder="Tìm theo từ khóa, mã câu..." oninput="renderAll()" />
+        </div>
+
+        <div class="filter-group">
+          <button class="btn btn-amber" onclick="shuffleQuestions('ALL')">🔀 Random toàn bộ</button>
+          <button class="btn btn-amber" onclick="shuffleQuestions('CAT')">🔀 Random trong từng chuyên đề</button>
+          <button class="btn" id="btn-restore" style="display:none;" onclick="restoreOrder()">↩️ Thứ tự gốc</button>
+          <button class="btn btn-outline-blue" id="btn-kw" onclick="toggleKeywords()">Keywords Xanh: BẬT</button>
+          <button class="btn btn-primary" id="btn-reveal" onclick="toggleRevealAll()">👁️ Hiện tất cả đáp án</button>
+          <button class="btn" onclick="resetQuiz()">🔄 Làm lại</button>
+        </div>
+      </div>
     </div>
   </div>
-</header>
+</div>
 
-<div class="toolbar">
-  <div class="toolbar-inner">
-    <div class="filter-group">
-      <select id="filter-source" onchange="renderAll()">
-        <option value="ALL">Bộ đề: Toàn bộ 114 câu (Word + Sổ tay PDF)</option>
-        <option value="WORD">Chỉ 67 câu trong File Word (Đề thi trắc nghiệm)</option>
-        <option value="PDF_EXTRA">Chỉ 48 câu bổ sung từ Sổ tay PDF</option>
-      </select>
-
-      <select id="filter-cat" onchange="renderAll()">
-        <option value="ALL">Tất cả 9 Chuyên đề (01 → 09)</option>
-        <option value="C1">01 | Nhà chung cư & Văn phòng kết hợp lưu trú</option>
-        <option value="C2">02 | Nhà thương mại liên kế & Biệt thự nghỉ dưỡng</option>
-        <option value="C3">03 | Quy hoạch, diện tích và số tầng</option>
-        <option value="C4">04 | An toàn cháy và thoát nạn (QCVN 06)</option>
-        <option value="C5">05 | An toàn sử dụng, lan can, kính & chống ồn</option>
-        <option value="C6">06 | Tiếp cận sử dụng cho người khuyết tật</option>
-        <option value="C7">07 | Gara, thang máy và năng lượng</option>
-        <option value="C8">08 | Thiết kế, khảo sát & Quản lý xây dựng</option>
-        <option value="C9">09 | Quy trình & Phân quyền nội bộ Sun Group</option>
-      </select>
-
-      <select id="filter-status" onchange="renderAll()">
-        <option value="ALL">Trạng thái: Tất cả</option>
-        <option value="UNANSWERED">Chưa trả lời</option>
-        <option value="WRONG">Các câu làm sai</option>
-        <option value="CORRECT">Các câu làm đúng</option>
-      </select>
-
-      <input type="text" id="search-input" placeholder="Tìm theo từ khóa, mã câu..." oninput="renderAll()" />
-    </div>
-
-    <div class="filter-group">
-      <button class="btn btn-amber" onclick="shuffleQuestions('ALL')">🔀 Random toàn bộ</button>
-      <button class="btn btn-amber" onclick="shuffleQuestions('CAT')">🔀 Random trong từng chuyên đề</button>
-      <button class="btn" id="btn-restore" style="display:none;" onclick="restoreOrder()">↩️ Thứ tự gốc</button>
-      <button class="btn btn-outline-blue" id="btn-kw" onclick="toggleKeywords()">Keywords Xanh: BẬT</button>
-      <button class="btn btn-primary" id="btn-reveal" onclick="toggleRevealAll()">👁️ Hiện tất cả đáp án</button>
-      <button class="btn" onclick="resetQuiz()">🔄 Làm lại</button>
-    </div>
-  </div>
+<!-- Nút nổi hiện ra khi thanh công cụ đang ẩn -->
+<div class="floating-controls" id="floating-controls">
+  <button class="fab-btn" onclick="showTopBar()">⚙️ Hiện thanh công cụ</button>
+  <button class="fab-btn" onclick="window.scrollTo({top:0, behavior:'smooth'})">⬆️ Đầu trang</button>
 </div>
 
 <div class="layout">
@@ -434,11 +548,7 @@ const CATEGORIES = {
   C9: "09 | Quy trình và phân quyền nội bộ Sun Group (Ma trận 152/2026; SG-QT-N02; SG-QT-R02)"
 };
 
-// Danh sách câu hỏi gồm:
-// - 67 câu từ File Word (id: 1 -> 67, có gắn pdfId tương ứng trong Sổ tay PDF)
-// - 48 câu còn lại từ Sổ tay PDF chưa xuất hiện trong file Word (id: 68 -> 115)
 const QUESTIONS = [
-  // ==================== 67 CÂU TRONG FILE WORD (ĐÃ LEARN ĐÁP ÁN TỪ FILE PDF) ====================
   {
     id: 1, wordId: 1, pdfId: "062", cat: "C6", inWord: true,
     q: "Theo <span class='kw'>QCVN 10:2014/BXD</span>, trong khu vực <span class='kw'>phòng vệ sinh, phòng tắm</span> phải đảm bảo <span class='kw'>khoảng không gian thông thuỷ tối thiểu</span> bao nhiêu để <span class='kw'>di chuyển xe lăn</span>?",
@@ -1110,8 +1220,6 @@ const QUESTIONS = [
     cite: "Sổ tay PDF - Câu 088 (Trang 12)",
     exp: "Bộ trưởng Bộ Quốc phòng và Bộ trưởng Bộ Công an quy định theo phạm vi quản lý."
   },
-
-  // ==================== 48 CÂU BỔ SUNG TỪ SỔ TAY PDF (ĐỂ ĐỦ 114 CÂU TRONG SỔ TAY) ====================
   {
     id: 68, wordId: null, pdfId: "001", cat: "C1", inWord: false,
     q: "Theo <span class='kw'>QCVN 04:2021/BXD</span>, <span class='kw'>cửa sổ nhà chung cư, nhà chung cư hỗn hợp</span> phải đáp ứng quy định nào?",
@@ -1655,9 +1763,48 @@ const QUESTIONS = [
 
 let userAnswers = {};
 let displayOrder = QUESTIONS.map(q => q.id);
-let shuffleMode = "NONE"; // NONE | ALL | CAT
+let shuffleMode = "NONE";
 let revealAll = false;
 let kwEnabled = true;
+
+// Xử lý tự động ẩn thanh công cụ khi vuốt xuống xem câu hỏi
+let lastScrollY = window.scrollY;
+const topBar = document.getElementById("top-bar");
+const floatingControls = document.getElementById("floating-controls");
+
+window.addEventListener("scroll", () => {
+  const currentScrollY = window.scrollY;
+  const delta = currentScrollY - lastScrollY;
+
+  // Khi cuộn xuống quá 90px -> Ẩn hoàn toàn Header + Options bar để đọc câu hỏi
+  if (delta > 8 && currentScrollY > 90) {
+    topBar.classList.add("nav-hidden");
+    floatingControls.classList.add("visible");
+    // Tự đóng ngăn kéo bộ lọc trên mobile nếu đang mở
+    document.getElementById("toolbar-drawer").classList.remove("open");
+    document.getElementById("btn-mob-expand").textContent = "⚙️ Bộ lọc ▾";
+  } 
+  // Khi vuốt ngược lên mạnh hoặc về sát đầu trang -> Hiện lại thanh công cụ
+  else if (delta < -14 || currentScrollY < 60) {
+    topBar.classList.remove("nav-hidden");
+    if (currentScrollY < 60) {
+      floatingControls.classList.remove("visible");
+    }
+  }
+
+  lastScrollY = currentScrollY;
+}, { passive: true });
+
+function showTopBar() {
+  topBar.classList.remove("nav-hidden");
+}
+
+function toggleMobileDrawer() {
+  const drawer = document.getElementById("toolbar-drawer");
+  const btn = document.getElementById("btn-mob-expand");
+  const isOpen = drawer.classList.toggle("open");
+  btn.textContent = isOpen ? "✕ Đóng lọc" : "⚙️ Bộ lọc ▾";
+}
 
 function getFilteredQuestions() {
   const srcFilter = document.getElementById("filter-source").value;
@@ -1705,7 +1852,6 @@ function renderAll() {
   const letters = ["A", "B", "C", "D"];
 
   if (shuffleMode === "ALL") {
-    // Hiển thị danh sách phẳng ngẫu nhiên toàn bộ
     const banner = document.createElement("div");
     banner.className = "section-banner";
     banner.innerHTML = `
@@ -1718,7 +1864,6 @@ function renderAll() {
       renderQuestionCard(q, idx + 1, container, mapContainer, letters);
     });
   } else {
-    // Nhóm theo Chuyên đề hoặc Thứ tự chuẩn
     const catKeys = Object.keys(CATEGORIES);
     catKeys.forEach(catKey => {
       const catQuestions = filtered.filter(q => q.cat === catKey);
@@ -1783,12 +1928,12 @@ function renderQuestionCard(q, posIndex, container, mapContainer, letters) {
 
   card.innerHTML = `
     <div class="q-meta">
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
         ${wordBadge}
         ${pdfBadge}
         ${posBadge}
       </div>
-      <span style="font-size:0.78rem;color:var(--muted);">${q.cite}</span>
+      <span style="font-size:0.75rem;color:var(--muted);">${q.cite}</span>
     </div>
     <div class="q-text">${q.q}</div>
     <div class="options-list">${optsHtml}</div>
@@ -1800,15 +1945,11 @@ function renderQuestionCard(q, posIndex, container, mapContainer, letters) {
 
   container.appendChild(card);
 
-  // Map item
   const mapItem = document.createElement("div");
   mapItem.className = "map-item"
     + (q.inWord ? " is-word" : " is-pdf-extra")
     + (isAnswered ? (isCorrect ? " done-ok" : " done-err") : "");
   mapItem.textContent = q.inWord ? `W${q.wordId}` : `P${q.pdfId}`;
-  mapItem.title = q.inWord
-    ? `Word Câu ${q.wordId} (PDF Câu ${q.pdfId})`
-    : `Sổ tay PDF Câu ${q.pdfId}`;
   mapItem.onclick = () => {
     document.getElementById(`q-card-${q.id}`).scrollIntoView({ behavior: "smooth", block: "center" });
   };
@@ -1833,7 +1974,7 @@ function updateStats(shownCount) {
     else errCount++;
   });
 
-  document.getElementById("stat-total").textContent = `Hiển thị: ${shownCount}/${totalQ} câu`;
+  document.getElementById("stat-total").textContent = `${shownCount}/${totalQ} câu`;
   document.getElementById("stat-done").textContent = `Đã làm: ${answeredIds.length}/${totalQ}`;
   document.getElementById("stat-ok").textContent = `Đúng: ${okCount}`;
   document.getElementById("stat-err").textContent = `Sai: ${errCount}`;
@@ -1881,6 +2022,7 @@ function toggleKeywords() {
 function toggleRevealAll() {
   revealAll = !revealAll;
   document.getElementById("btn-reveal").textContent = revealAll ? "🙈 Ẩn đáp án" : "👁️ Hiện tất cả đáp án";
+  document.getElementById("btn-reveal-mob").textContent = revealAll ? "🙈 Ẩn" : "👁️ Đáp án";
   renderAll();
 }
 
@@ -1889,6 +2031,7 @@ function resetQuiz() {
   userAnswers = {};
   revealAll = false;
   document.getElementById("btn-reveal").textContent = "👁️ Hiện tất cả đáp án";
+  document.getElementById("btn-reveal-mob").textContent = "👁️ Đáp án";
   renderAll();
 }
 
